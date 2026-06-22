@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
   const [input, setInput] = useState("")
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState(
+     JSON.parse(localStorage.getItem("tasks")) || [])
 
   function handleadd() {
     if (input.trim() === "") return;
@@ -20,9 +21,20 @@ function App() {
     );
   }
 
+  function handledelet(id) {
+    setTasks(
+      tasks.filter(task => task.id !== id)
+    );
+  }
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+ 
+
   return (
     <>
-
       <div>
 
 
@@ -41,13 +53,16 @@ function App() {
               {task.task}
             </span>
 
+            <button onClick={() => handledelet(task.id)}>Delet</button>
+
           </div>
         ))}
 
 
 
-      </div>
 
+
+      </div>
     </>
   )
 }
