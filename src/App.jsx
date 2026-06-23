@@ -75,15 +75,22 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='app'>
 
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+        <h1>Task Manager</h1>
+
+        <p className="stats">📋 Total: {total} | ✅ Done: {done} | ⏳ Pending: {notdone}</p>
+
+
+        <select className="controls" value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">All</option>
           <option value="done">Done</option>
           <option value="notdone">Not Done</option>
         </select>
 
-        <button onClick={handledelcom}>Delete Completed</button>
+        <button className='delete-completed-btn' onClick={handledelcom}>Delete Completed</button>
+
+
 
         <TaskInput
           input={input}
