@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import TaskInput from './components/TaskInput'
+import TaskList from './components/TaskList'
+import TaskItem from "./components/TaskItem";
 
 function App() {
   const [input, setInput] = useState("")
 
-  const [tasks, setTasks] = useState(() => { try {
-    const data = localStorage.getItem("tasks");
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return []; }});
+  const [tasks, setTasks] = useState(() => {
+    try {
+      const data = localStorage.getItem("tasks");
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const [editingId, setEditingId] = useState(null)
   const [filter, setFilter] = useState("all")
@@ -17,9 +23,9 @@ function App() {
   const done = tasks.filter(task => task.completed).length
   const notdone = tasks.filter(task => !task.completed).length
 
-  const filtertask = tasks.filter(task =>{
-    if(filter === "done") return task.completed;
-    if(filter === "notdone") return !task.completed;
+  const filtertask = tasks.filter(task => {
+    if (filter === "done") return task.completed;
+    if (filter === "notdone") return !task.completed;
     return true;
   }
   )
@@ -56,9 +62,9 @@ function App() {
       tasks.filter(task => task.id !== id));
   }
 
-  function handledelcom(){
+  function handledelcom() {
     setTasks(
-    tasks.filter(task => task.completed  === false));
+      tasks.filter(task => task.completed === false));
   }
 
   useEffect(() => {
@@ -79,34 +85,19 @@ function App() {
 
         <button onClick={handledelcom}>Delete Completed</button>
 
+        <TaskInput
+          input={input}
+          setInput={setInput}
+          handleadd={handleadd}
+          editingId={editingId} />
 
-        <input type="text" placeholder="Add task" value={input}
-          onChange={(e) => setInput(e.target.value)} />
-
-        <button onClick={handleadd}>{editingId ? "Update" : "Add"}</button>
-
-        {filtertask.map((task, index) => (
-          <div key={task.id}>
-
-
-            <input type="checkbox" checked={task.completed}
-              onChange={() => toggleTask(task.id)} />
-
-            <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
-              {task.task}
-            </span>
-
-            <button onClick={() => {
-              setInput(task.task)
-              setEditingId(task.id)
-            }}>Edit</button>
-
-            <button onClick={() => handledelet(task.id)}>Delet</button>
-
-          </div>
-        ))}
-
-
+        <TaskList
+          tasks={filtertask}
+          toggleTask={toggleTask}
+          handledelet={handledelet}
+          setInput={setInput}
+          setEditingId={setEditingId}
+        />
 
       </div>
     </>
