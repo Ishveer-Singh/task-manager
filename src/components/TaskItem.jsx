@@ -16,7 +16,7 @@ function TaskItem({ task, toggleTask, handledelet, setInput, setEditingId }) {
                 setEditingId(task.id)
             }}>Edit</button>
 
-            <button className="delete-btn" onClick={() => handledelet(task.id)}>Delet</button>
+            <button className="delete-btn" onClick={() => handledelet(task.id)}>Delete</button>
 
 
 

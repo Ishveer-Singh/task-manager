@@ -2,6 +2,10 @@
 
 A simple Task Manager built with React that helps users organize and track their daily tasks.
 
+## 🚀 Live Demo
+
+👉 https://ishveer-singh.github.io/task-manager/
+
 ## Features
 
 - Add new tasks
@@ -21,9 +25,6 @@ A simple Task Manager built with React that helps users organize and track their
 - CSS
 - Vite
 
-## Screenshots
-
-Add screenshots of the application here.
 
 ## How to Run
 
