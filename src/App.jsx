@@ -3,13 +3,26 @@ import './App.css'
 
 function App() {
   const [input, setInput] = useState("")
-  const [tasks, setTasks] = useState(
-    JSON.parse(localStorage.getItem("tasks")) || [])
+
+  const [tasks, setTasks] = useState(() => { try {
+    const data = localStorage.getItem("tasks");
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return []; }});
+
   const [editingId, setEditingId] = useState(null)
+  const [filter, setFilter] = useState("all")
 
   const total = tasks.length
-  const done = tasks.filter(task => task.completed ).length
-  const notdone = tasks.filter(task => !task.completed ).length
+  const done = tasks.filter(task => task.completed).length
+  const notdone = tasks.filter(task => !task.completed).length
+
+  const filtertask = tasks.filter(task =>{
+    if(filter === "done") return task.completed;
+    if(filter === "notdone") return !task.completed;
+    return true;
+  }
+  )
 
   function handleadd() {
     if (input.trim() === "") return;
@@ -40,8 +53,12 @@ function App() {
 
   function handledelet(id) {
     setTasks(
-      tasks.filter(task => task.id !== id)
-    );
+      tasks.filter(task => task.id !== id));
+  }
+
+  function handledelcom(){
+    setTasks(
+    tasks.filter(task => task.completed  === false));
   }
 
   useEffect(() => {
@@ -54,14 +71,22 @@ function App() {
     <>
       <div>
 
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="done">Done</option>
+          <option value="notdone">Not Done</option>
+        </select>
+
+        <button onClick={handledelcom}>Delete Completed</button>
+
 
         <input type="text" placeholder="Add task" value={input}
           onChange={(e) => setInput(e.target.value)} />
 
-        <button onClick={handleadd}>Add</button>
+        <button onClick={handleadd}>{editingId ? "Update" : "Add"}</button>
 
-        {tasks.map((task, index) => (
-          <div key={index}>
+        {filtertask.map((task, index) => (
+          <div key={task.id}>
 
 
             <input type="checkbox" checked={task.completed}
@@ -80,8 +105,6 @@ function App() {
 
           </div>
         ))}
-
-
 
 
 
